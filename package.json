@@ -1,0 +1,31 @@
+{
+  "name": "substratum",
+  "workspaces": [
+    "backend",
+    "common",
+    "frontend"
+  ],
+  "version": "1.0.0",
+  "description": "<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "build:common": "npm run build --workspace=common",
+    "docker:test:unit:backend": "docker compose run backend npm run test:unit --no-deps --rm",
+    "docker:test:db:backend": "docker compose run backend npm run test:db --rm",
+    "docker:test:backend": "docker compose run backend npm test --rm",
+    "docker:dev:up": "docker compose up --watch",
+    "docker:dev:down": "docker compose down",
+    "docker:rebuild": "docker compose build --no-cache",
+    "prepare": "husky"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7"
+  }
+}

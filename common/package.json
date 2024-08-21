@@ -1,0 +1,19 @@
+{
+  "name": "@packages/common",
+  "version": "1.0.0",
+  "description": "shared resources",
+  "main": "dist/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "test": "test",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
+}
