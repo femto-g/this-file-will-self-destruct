@@ -20,3 +20,9 @@ model users {
   hashed_password                   Bytes
    salt                              Bytes
 }
+
+model files {
+  id  Int @id @default(autoincrement())
+  key String @unique
+  remaining_downloads Int
+}

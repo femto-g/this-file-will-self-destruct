@@ -48,6 +48,9 @@
     "typescript-eslint": "^8.0.0-alpha.39"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.635.0",
+    "@aws-sdk/client-sqs": "^3.654.0",
+    "@aws-sdk/s3-request-presigner": "^3.635.0",
     "@prisma/client": "^5.12.0",
     "@quixo3/prisma-session-store": "^3.1.13",
     "cors": "^2.8.5",
