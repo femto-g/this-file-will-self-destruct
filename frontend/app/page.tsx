@@ -13,87 +13,48 @@ import Link from "next/link";
 import useResponsiveRender from "@/hooks/useResponsiveRender";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import Heading1 from "@/components/heading/Heading1";
+import { FormSubmitInput } from "@/components/form/FormSubmitInput";
+import { apiGet } from "@/api/client";
+import { useState } from "react";
 
 export default function Home() {
   const render = useResponsiveRender();
   const mediumScreen = useBreakpoint("md");
+
+  const [displayShare, setDisplayShare] = useState<Boolean>(false);
+  const [shareUrl, setShareUrl] = useState<String>();
+
+  const uploadFile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      fileInput: { files: [1] };
+    };
+    const file = target.fileInput.files[0] as any;
+    const type = file.name.split(".").pop();
+    const response = await apiGet({ endpoint: `upload-url?extension=${type}` });
+    const { url, key } = await response.json();
+    await fetch(url, {
+      method: "PUT",
+      body: target.fileInput.files[0] as unknown as BodyInit,
+    });
+    setDisplayShare(true);
+    setShareUrl(`http://localhost:3000/file/${key}`);
+  };
   return (
     <div className="w-full">
       <div className="flex flex-col items-center gap-10">
         <div className="flex flex-col items-center gap-5 pt-5">
-          <Heading1>Skip the boilerplate and start creating</Heading1>
+          <Heading1>This File Will Self Destruct</Heading1>
           <p className="text-2xl text-center">
-            A full stack starter-kit to give you a headstart on your next
-            project
+            Upload a file to share a one-time download link. Once it's
+            downloaded, it's gone.
           </p>
+          <form onSubmit={uploadFile}>
+            <input type="file" id="fileInput" />
+            <FormSubmitInput />
+          </form>
         </div>
-        <div className="flex flex-row">
-          <a href="https://github.com/femto-g/substratum" target="_blank">
-            <div className="flex flex-row items-center rounded-2xl bg-slate-400 px-2 py-1 shadow-md gap-1 hover:border hover:border-black hover:m-[-1px]">
-              <IconImage
-                src={icons.GITHUB}
-                alt="Get started on github"
-                height={30}
-                width={30}
-              />
-              <p>Get Started on Github</p>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-8 mb-10 m-auto max-w-[90%] pt-10">
-        <div className="flex flex-col md:flex-row flex-wrap gap-10 max-w-screen-lg">
-          <Card className="w-[80%] md:flex-1 mx-auto md:min-h-full">
-            <CardIcons>
-              <IconImage src={icons.NEXT_JS} alt={"Nextjs"} />
-              <IconImage src={icons.REACT} alt={"React"} />
-              <IconImage src={icons.TAILWIND} alt={"Tailwind"} />
-            </CardIcons>
-            <CardContent>
-              <CardHeader>A powerful frontend toolkit</CardHeader>
-              <CardText>
-                A modern frontend development stack that combines the best of
-                React, Next.js, and TailwindCSS to make building beautiful,
-                interactive web applications easier than ever.
-              </CardText>
-              <CardFooter>Learn more</CardFooter>
-            </CardContent>
-          </Card>
-          <Card className="w-[80%] md:flex-1 mx-auto md:min-h-full">
-            <CardIcons>
-              <IconImage src={icons.EXPRESS} alt={"Express"} />
-              <IconImage src={icons.TYPESCRIPT} alt={"Typescript"} />
-              <IconImage src={icons.PRISMA} alt={"Prisma"} />
-            </CardIcons>
-            <CardContent>
-              <CardHeader>Robust tools for your backend</CardHeader>
-              <CardText>
-                A modern backend development stack that combines the best of
-                ExpressJS, Prisma ORM, and TypeScript to make building robust,
-                scalable, and type-safe web applications easier than ever.
-              </CardText>
-              <CardFooter>Learn more</CardFooter>
-            </CardContent>
-          </Card>
-        </div>
-        <div>
-          <Card className="w-[80%] m-auto">
-            <CardIcons>
-              <IconImage src={icons.DOCKER} alt={"Docker"} />
-              <IconImage src={icons.JEST} alt={"Jest"} />
-              <IconImage src={icons.GITHUB_ACTIONS} alt={"Github actions"} />
-            </CardIcons>
-            <CardContent>
-              <CardHeader>A modern development workflow</CardHeader>
-              <CardText>
-                Streamline your development with Docker, Jest, ESLint, Husky,
-                and Github Actions CI to make building, testing, and deploying
-                web applications easier than ever.
-              </CardText>
-              <CardFooter>Learn more</CardFooter>
-            </CardContent>
-          </Card>
-        </div>
+        {displayShare ? <div>Share : {shareUrl}</div> : null}
       </div>
     </div>
   );

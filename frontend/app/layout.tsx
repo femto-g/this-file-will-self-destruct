@@ -6,6 +6,7 @@ import Link from "next/link";
 import IconImage from "@/components/image/IconImage";
 import { ReactQueryProvider } from "@/components/providers/ReactQueryProvider";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import BasicNav from "@/components/nav/BasicNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +25,8 @@ export default function RootLayout({
       <body className="min-h-full bg-gradient-to-r from-sky-50 to-indigo-50">
         <div className="min-h-full relative overflow-hidden">
           <ReactQueryProvider>
-            <SessionProvider>
-              <Nav />
-              {children}
-            </SessionProvider>
+            <BasicNav />
+            {children}
           </ReactQueryProvider>
         </div>
       </body>
